@@ -13,9 +13,9 @@
 bin/
 
 # --- Frontend (React / Vite) ---
-/frontend/node_modules/
-/frontend/dist/
-/frontend/.vite/
+/cn-frontend/node_modules/
+/cn-frontend/dist/
+/cn-frontend/.vite/
 
 # --- OS / IDE / Misc ---
 .DS_Store
@@ -27,9 +27,9 @@ Thumbs.db
 
 
 # --- Eclipse project files ---
-/backend/.classpath
-/backend/.project
-/backend/.settings/
+/cn-backend/.classpath
+/cn-backend/.project
+/cn-backend/.settings/
 
 
 # --- Additional files ---
