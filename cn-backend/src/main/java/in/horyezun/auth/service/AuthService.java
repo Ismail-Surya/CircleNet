@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import in.horyezun.auth.dto.RegisterRequest;
 import in.horyezun.auth.dto.RegisterResponse;
+import in.horyezun.exception.EmailAlreadyExistsException;
+import in.horyezun.exception.UsernameAlreadyExistsException;
 import in.horyezun.user.entity.User;
 import in.horyezun.user.service.UserService;
 
@@ -21,11 +23,11 @@ public class AuthService {
 	
 	public RegisterResponse register (RegisterRequest request) {
 		if (userService.existsByUsername(request.getUsername())) {
-			throw new RuntimeException("Username already exists");
+			throw new UsernameAlreadyExistsException("Username already exists");
 		}
 		
 		if (userService.existsByEmail(request.getEmail())) {
-			throw new RuntimeException("Email already exists");
+			throw new EmailAlreadyExistsException("Email already exists");
 		}
 		
 		User user = new User();
