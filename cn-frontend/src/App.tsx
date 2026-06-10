@@ -1,12 +1,11 @@
-function App () {
-    return (
-        <div className="container mt-5">
-            <h1>CircleNet</h1>
+import { useEffect } from "react";
+import { registerUser } from "./services/authService";
+import AppRouter from "./Router/AppRouter";
 
-            <p>
-                Welcome to CircleNet.
-            </p>
-        </div>
+function App () {
+
+    return (
+        <AppRouter />
     );
 }
 
