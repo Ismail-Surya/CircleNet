@@ -1,5 +1,7 @@
 package in.horyezun.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import in.horyezun.user.entity.User;
@@ -24,6 +26,10 @@ public class UserService {
 	
 	public boolean existsByEmail (String email) {
 		return userRepo.existsByEmail(email);
+	}
+	
+	public Optional<User> findByUsername (String username) {
+		return userRepo.findByUsername(username);
 	}
 	
 }

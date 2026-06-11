@@ -24,6 +24,13 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	}
 	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity <ErrorResponse> handleInvalidCredentialsException (InvalidCredentialsException exc) {
+		ErrorResponse response = new ErrorResponse(exc.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity <ErrorResponse> handleGenericException (Exception exc) {
 		ErrorResponse response = new ErrorResponse("An unexpected error occurred");

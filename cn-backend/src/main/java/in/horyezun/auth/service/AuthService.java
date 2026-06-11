@@ -3,9 +3,12 @@ package in.horyezun.auth.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import in.horyezun.auth.dto.LoginRequest;
+import in.horyezun.auth.dto.LoginResponse;
 import in.horyezun.auth.dto.RegisterRequest;
 import in.horyezun.auth.dto.RegisterResponse;
 import in.horyezun.exception.EmailAlreadyExistsException;
+import in.horyezun.exception.InvalidCredentialsException;
 import in.horyezun.exception.UsernameAlreadyExistsException;
 import in.horyezun.user.entity.User;
 import in.horyezun.user.service.UserService;
@@ -40,6 +43,20 @@ public class AuthService {
 		userService.save(user);
 		
 		return new RegisterResponse("User registered successfully");
+	}
+	
+	public LoginResponse login (LoginRequest request) {
+		
+		User user = userService.findByUsername(request.getUsername()).orElseThrow(() -> new InvalidCredentialsException("Invalid username or password"));
+		
+		boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
+		
+		if (!passwordMatches) {
+			throw new InvalidCredentialsException("Invalid username or password");
+		}
+		
+		return new LoginResponse("Login successful");
+		
 	}
 	
 }
