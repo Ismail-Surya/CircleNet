@@ -20,7 +20,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-    message: string
+    token: string
 }
 
 export const registerUser = async (request : RegisterRequest) :

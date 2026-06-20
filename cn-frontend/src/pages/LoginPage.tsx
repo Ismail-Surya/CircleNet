@@ -37,7 +37,8 @@ export default function LoginPage() {
     setErrorMessage('');
     try {
         const response = await loginUser(formData);
-        setSuccessMessage(response.message);
+        console.log(response.token);
+        setSuccessMessage("Login successful");
         setFormData({
             username: "",
             password: ""
