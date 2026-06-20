@@ -12,15 +12,15 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-	private static final String SECRET_KEY =
-			"circlenet-secret-key-for-development-only-123456789";
+	private final JwtProperties jwtProps;
 	
-	private static final long EXPIRATION_TIME =
-			1000 * 60 * 60 * 24;
+	public JwtService (JwtProperties jwtProps) {
+		this.jwtProps = jwtProps;
+	}
 	
-	private Key getSigninKey () {
+	private Key getSigningKey () {
 		return Keys.hmacShaKeyFor(
-			SECRET_KEY.getBytes(
+			jwtProps.getSecret().getBytes(
 				StandardCharsets.UTF_8
 			)
 		);
@@ -31,14 +31,14 @@ public class JwtService {
 		
 		Date expiry = new Date(
 							now.getTime()
-							+ EXPIRATION_TIME
+							+ jwtProps.getExpiration()
 						);
 		return Jwts.builder()
 				.setSubject(username)
 				.setIssuedAt(now)
 				.setExpiration(expiry)
 				.signWith(
-					getSigninKey()
+					getSigningKey()
 				)
 				.compact();
 	}
