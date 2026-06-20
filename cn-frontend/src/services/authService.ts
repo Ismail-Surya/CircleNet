@@ -14,6 +14,15 @@ export type RegisterResponse = {
     message: string
 }
 
+export interface LoginRequest {
+    username: string,
+    password: string
+}
+
+export interface LoginResponse {
+    message: string
+}
+
 export const registerUser = async (request : RegisterRequest) :
     Promise <RegisterResponse> => {
 
@@ -25,3 +34,15 @@ export const registerUser = async (request : RegisterRequest) :
     return response.data;
 
 }
+
+export const loginUser = async (request: LoginRequest) :
+    Promise <LoginResponse> => {
+
+        const response = await axios.post<LoginResponse> (
+            `${API_BASE_URL}/api/auth/login`,
+            request
+        );
+
+        return response.data;
+
+    }

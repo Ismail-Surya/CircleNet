@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import RegisterPage from '../pages/RegisterPage';
+import LoginPage from "../pages/LoginPage";
 
 function AppRouter() {
 
@@ -9,8 +10,12 @@ function AppRouter() {
 
                 <Route path = "/"
                     element = {
-                        <Navigate to="/register" replace />
+                        <Navigate to="/login" replace />
                     }
+                />
+
+                <Route path = "/login"
+                    element = {<LoginPage />}
                 />
 
                 <Route path = "/register"
