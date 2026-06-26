@@ -46,3 +46,18 @@ export const loginUser = async (request: LoginRequest) :
         return response.data;
 
     }
+
+export async function getCurrentUser() : Promise <string> {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get<string>(
+        `${API_BASE_URL}/api/user/me`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+}

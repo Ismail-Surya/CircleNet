@@ -12,40 +12,27 @@ import in.horyezun.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig
-        extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtAuthenticationFilter jwtFilter;
-	
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+
+	public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
 		this.jwtFilter = jwtFilter;
 	}
 
 	@Override
-    protected void configure(
-            HttpSecurity http)
-            throws Exception {
+	protected void configure(HttpSecurity http) throws Exception {
 
-        http
-        		.csrf()
-        		.disable()
-        		.sessionManagement()
-        		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        		.and()
-        		.authorizeRequests()
-        		.antMatchers("/api/auth/register", "/api/auth/login")
-        		.permitAll()
-        		.anyRequest()
-        		.authenticated();
-        
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+		http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().authorizeRequests().antMatchers("/api/auth/register", "/api/auth/login").permitAll().anyRequest()
+				.authenticated();
 
-    @Override
-    protected void configure(
-            AuthenticationManagerBuilder auth)
-            throws Exception {
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+	}
 
-        // No authentication configuration yet.
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+		// No authentication configuration yet.
+	}
 }
