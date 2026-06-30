@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { registerUser } from "./services/authService";
-import AppRouter from "./Router/AppRouter";
+import AppRouter from "./router/AppRouter";
 
 function App () {
 

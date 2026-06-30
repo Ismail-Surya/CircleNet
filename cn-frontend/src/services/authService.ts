@@ -23,6 +23,18 @@ export interface LoginResponse {
     token: string
 }
 
+export interface UserProfileResponse {
+    id: number;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    profilePictureUrl: string | null;
+    bio: string | null;
+    createdAt: string;
+    updatedAt: string
+}
+
 export const registerUser = async (request : RegisterRequest) :
     Promise <RegisterResponse> => {
 
@@ -47,11 +59,11 @@ export const loginUser = async (request: LoginRequest) :
 
     }
 
-export async function getCurrentUser() : Promise <string> {
+export async function getProfile() : Promise <UserProfileResponse> {
     const token = localStorage.getItem("token");
 
-    const response = await axios.get<string>(
-        `${API_BASE_URL}/api/user/me`,
+    const response = await axios.get<UserProfileResponse>(
+        `${API_BASE_URL}/api/user/profile`,
         {
             headers: {
                 Authorization: `Bearer ${token}`

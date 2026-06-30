@@ -1,11 +1,11 @@
 import axios from "axios";
 import {
-  getCurrentUser,
+  getProfile,
   loginUser,
   type LoginRequest,
 } from "../services/authService";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<LoginRequest>({
@@ -14,6 +14,8 @@ export default function LoginPage() {
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   function formatLabel(str: string) {
     const withSpaces = str.replace(/([A-Z])/g, " $1");
@@ -40,16 +42,10 @@ export default function LoginPage() {
     setErrorMessage("");
     try {
       const response = await loginUser(formData);
-      console.log(response.token);
+
       localStorage.setItem("token", response.token);
 
-      const username = await getCurrentUser();
-      console.log("Authenticated User: " + username);
-      setSuccessMessage(`Welcome ${username}`);
-      setFormData({
-        username: "",
-        password: "",
-      });
+      navigate("/profile");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setErrorMessage(error.response?.data?.message ?? "Request Failed");
