@@ -1,0 +1,55 @@
+package in.horyezun.user.dto;
+
+public class UpdateProfileRequest {
+
+	private String firstName;
+	
+	private String lastName;
+	
+	private String profilePictureUrl;
+	
+	private String bio;
+
+	public UpdateProfileRequest() {
+	}
+
+	public UpdateProfileRequest(String firstName, String lastName, String profilePictureUrl, String bio) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.profilePictureUrl = profilePictureUrl;
+		this.bio = bio;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+	
+}

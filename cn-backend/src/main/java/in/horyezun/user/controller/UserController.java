@@ -3,9 +3,12 @@ package in.horyezun.user.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.horyezun.user.dto.UpdateProfileRequest;
 import in.horyezun.user.dto.UserProfileResponse;
 import in.horyezun.user.service.UserService;
 
@@ -23,6 +26,13 @@ public class UserController {
 	public ResponseEntity<UserProfileResponse> getProfile (Authentication authentication) {
 		UserProfileResponse profile =
 				userService.getProfile(authentication.getName());
+		
+		return ResponseEntity.ok(profile);
+	}
+	
+	@PutMapping("/profile")
+	public ResponseEntity<UserProfileResponse> updateProfile(Authentication authentication, @RequestBody UpdateProfileRequest updateProfileRequest) {
+		UserProfileResponse profile = userService.updateProfile(authentication.getName(), updateProfileRequest);
 		
 		return ResponseEntity.ok(profile);
 	}
