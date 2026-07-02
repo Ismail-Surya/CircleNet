@@ -35,6 +35,13 @@ export interface UserProfileResponse {
     updatedAt: string
 }
 
+export interface UpdateProfileRequest {
+    firstName: string,
+    lastName: string,
+    bio: string,
+    profilePictureUrl: string
+}
+
 export const registerUser = async (request : RegisterRequest) :
     Promise <RegisterResponse> => {
 
@@ -64,6 +71,22 @@ export async function getProfile() : Promise <UserProfileResponse> {
 
     const response = await axios.get<UserProfileResponse>(
         `${API_BASE_URL}/api/user/profile`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+}
+
+export async function updateProfile(request: UpdateProfileRequest) : Promise<UserProfileResponse> {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.put<UserProfileResponse>(
+        `${API_BASE_URL}/api/user/profile`,
+        request,
         {
             headers: {
                 Authorization: `Bearer ${token}`
