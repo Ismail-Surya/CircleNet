@@ -1,15 +1,21 @@
 package in.horyezun.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import in.horyezun.post.entity.Post;
 
 @Entity
 @Table(name = "users")
@@ -45,6 +51,12 @@ public class User {
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
 	
+	@OneToMany(mappedBy = "user",
+				cascade = CascadeType.ALL,
+				orphanRemoval = true
+			)
+	private List <Post> posts = new ArrayList<> ();
+
 	@PrePersist
 	public void prePersist () {
 		LocalDateTime now = LocalDateTime.now();
@@ -166,6 +178,14 @@ public class User {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
