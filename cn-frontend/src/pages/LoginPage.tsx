@@ -45,7 +45,7 @@ export default function LoginPage() {
 
       localStorage.setItem("token", response.token);
 
-      navigate("/profile");
+      navigate("/feed");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setErrorMessage(error.response?.data?.message ?? "Request Failed");

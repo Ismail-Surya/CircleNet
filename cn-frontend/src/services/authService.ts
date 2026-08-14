@@ -42,6 +42,20 @@ export interface UpdateProfileRequest {
     profilePictureUrl: string
 }
 
+export type CreatePostRequest = {
+    content: string
+}
+
+export type PostResponse = {
+    id: number;
+    content: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    profilePictureUrl: string;
+    createdAt: string;
+}
+
 export const registerUser = async (request : RegisterRequest) :
     Promise <RegisterResponse> => {
 
@@ -87,6 +101,39 @@ export async function updateProfile(request: UpdateProfileRequest) : Promise<Use
     const response = await axios.put<UserProfileResponse>(
         `${API_BASE_URL}/api/user/profile`,
         request,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+}
+
+export async function createPost (
+    request: CreatePostRequest
+) : Promise <PostResponse> {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post <PostResponse> (
+        `${API_BASE_URL}/api/posts`,
+        request,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+    );
+
+    return response.data;
+}
+
+export async function getFeed () : Promise <PostResponse[]> {
+    const token = localStorage.getItem(`token`);
+
+    const response = await axios.get<PostResponse[]> (
+        `${API_BASE_URL}/api/posts`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
