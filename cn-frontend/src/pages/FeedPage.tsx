@@ -35,8 +35,8 @@ export default function FeedPage() {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = event.target;
 
-    setFormData(prev => ({ ...prev, [name] : value }));
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,22 +46,20 @@ export default function FeedPage() {
 
     try {
       const newPost = await createPost(formData);
-      setPosts(prev => ([newPost, ...prev]));
+      setPosts((prev) => [newPost, ...prev]);
       setFormData({
-        content: ""
+        content: "",
       });
 
       setSuccessMessage("Post created successfully");
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        setErrorMessage(
-          err.response?.data?.message ?? "Request failed."
-        );
+        setErrorMessage(err.response?.data?.message ?? "Request failed.");
       } else {
-        setErrorMessage("Unexpected error occurred.")
+        setErrorMessage("Unexpected error occurred.");
       }
     }
-  }
+  };
 
   return (
     <div className="container mt-4">
@@ -80,30 +78,58 @@ export default function FeedPage() {
               <textarea
                 className="form-control"
                 rows={4}
-                placeholder="What's on your mind"
+                placeholder="What's on your mind?"
                 name="content"
                 value={formData.content}
                 onChange={handleChange}
                 required
               />
             </div>
-            <button className="btn btn-primary" type = "submit">Create Post</button>
+            <button className="btn btn-primary" type="submit">
+              Create Post
+            </button>
           </form>
         </div>
       </div>
-      {
-        posts.map(post => (
-          <div className="card mb-3" key = {post.id}>
-            <div className="card-body">
-              <h5>{post.firstName} {post.lastName}</h5>
-              <small className="text-muted">@{post.username}</small>
-              <hr />
-              <p>{post.content}</p>
-              <small className="text-muted">{new Date(post.createdAt).toLocaleDateString()}</small>
+      {posts.map((post) => (
+        <div className="card mb-3" key={post.id}>
+          <div className="card-body">
+            <div className="d-flex align-items-center mb-3">
+              {post.profilePictureUrl ? (
+                <img
+                  src={post.profilePictureUrl}
+                  alt={`${post.firstName} ${post.lastName}`}
+                  className="rounded-circle me-3"
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <div
+                  className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    fontSize: "24px",
+                  }}
+                >
+                  👤
+                </div>
+              )}
+              <div>
+                <h5 className="mb-0">
+                  {post.firstName} {post.lastName}
+                </h5>
+                <small className="text-muted">@{post.username}</small>
+              </div>
             </div>
+            <hr />
+            <p>{post.content}</p>
+            <small className="text-muted">
+              {new Date(post.createdAt).toLocaleString()}
+            </small>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   );
 }
