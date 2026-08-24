@@ -56,6 +56,15 @@ export type PostResponse = {
     createdAt: string;
 }
 
+export interface PublicProfileResponse {
+    username: string;
+    firstName: string;
+    lastName: string;
+    profilePictureUrl: string | null;
+    bio: string | null;
+    createdAt: string;
+}
+
 export const registerUser = async (request : RegisterRequest) :
     Promise <RegisterResponse> => {
 
@@ -142,4 +151,22 @@ export async function getFeed () : Promise <PostResponse[]> {
     );
 
     return response.data;
+}
+
+export async function getPublicProfile (
+    username: string
+) : Promise <PublicProfileResponse> {
+
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get<PublicProfileResponse>(
+        `${API_BASE_URL}/api/user/${username}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response.data;
+
 }

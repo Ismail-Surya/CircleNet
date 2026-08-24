@@ -5,6 +5,7 @@ import {
   type CreatePostRequest,
   type PostResponse,
 } from "../services/authService";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -54,7 +55,16 @@ export default function FeedPage() {
       setSuccessMessage("Post created successfully");
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        setErrorMessage(err.response?.data?.message ?? "Request failed.");
+        const status = err.response?.status;
+        if (status === 401) {
+          setErrorMessage("You must be logged in to create a post.");
+        } else if (status === 403) {
+          setErrorMessage("You are not authorized to create a post.");
+        } else if (status === 400) {
+          setErrorMessage(err.response?.data?.message ?? "Invalid post content.")
+        } else {
+          setErrorMessage(err.response?.data?.message ?? "Request failed.");
+        }
       } else {
         setErrorMessage("Unexpected error occurred.");
       }
@@ -95,6 +105,7 @@ export default function FeedPage() {
         <div className="card mb-3" key={post.id}>
           <div className="card-body">
             <div className="d-flex align-items-center mb-3">
+              <Link to = {`/users/${post.username}`} className="text-decoration-none">
               {post.profilePictureUrl ? (
                 <img
                   src={post.profilePictureUrl}
@@ -115,11 +126,16 @@ export default function FeedPage() {
                   👤
                 </div>
               )}
+              </Link>
               <div>
+                <Link className="text-decoration-none text-dark" to={`/users/${post.username}`}>
                 <h5 className="mb-0">
                   {post.firstName} {post.lastName}
                 </h5>
+                </Link>
+                <Link className="text-decoration-none" to={`/users/${post.username}`}>
                 <small className="text-muted">@{post.username}</small>
+                </Link>
               </div>
             </div>
             <hr />

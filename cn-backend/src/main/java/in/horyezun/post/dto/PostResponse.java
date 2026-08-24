@@ -14,7 +14,7 @@ public class PostResponse {
 	
 	private String lastName;
 	
-	private String profilePicture;
+	private String profilePictureUrl;
 	
 	private LocalDateTime createdAt;
 	
@@ -24,13 +24,13 @@ public class PostResponse {
 	}
 
 	public PostResponse(Long id, String content, String username, String firstName, String lastName,
-			String profilePicture, LocalDateTime createdAt, LocalDateTime updatedAt) {
+			String profilePictureUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
 		this.content = content;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.profilePicture = profilePicture;
+		this.profilePictureUrl = profilePictureUrl;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
@@ -55,8 +55,8 @@ public class PostResponse {
 		return lastName;
 	}
 
-	public String getProfilePicture() {
-		return profilePicture;
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
 	}
 
 	public LocalDateTime getCreatedAt() {

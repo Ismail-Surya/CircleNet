@@ -3,11 +3,13 @@ package in.horyezun.user.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.horyezun.user.dto.PublicProfileResponse;
 import in.horyezun.user.dto.UpdateProfileRequest;
 import in.horyezun.user.dto.UserProfileResponse;
 import in.horyezun.user.service.UserService;
@@ -37,4 +39,11 @@ public class UserController {
 		return ResponseEntity.ok(profile);
 	}
 	
+	@GetMapping("/{username}")
+	public ResponseEntity<PublicProfileResponse> getPublicProfile (
+				@PathVariable String username
+			) {
+		return ResponseEntity.ok(userService.getPublicProfile(username));
+	}
+
 }

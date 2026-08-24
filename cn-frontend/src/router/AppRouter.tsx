@@ -1,42 +1,28 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import RegisterPage from '../pages/RegisterPage';
+import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import FeedPage from "../pages/FeedPage";
+import PublicProfilePage from "../pages/PublicProfilePage";
 
 function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-    return (
-        <BrowserRouter>
-            <Routes>
+        <Route path="/feed" element={<FeedPage />} />
 
-                <Route path = "/"
-                    element = {
-                        <Navigate to="/login" replace />
-                    }
-                />
+        <Route path="/login" element={<LoginPage />} />
 
-                <Route path = "/feed"
-                    element = {<FeedPage />}
-                />
+        <Route path="/register" element={<RegisterPage />} />
 
-                <Route path = "/login"
-                    element = {<LoginPage />}
-                />
+        <Route path="/profile" element={<ProfilePage />} />
 
-                <Route path = "/register"
-                element = {<RegisterPage />}
-                
-                />
-
-                <Route path="/profile"
-                element = {<ProfilePage />}
-                />
-                
-            </Routes>
-        </BrowserRouter>
-    );
-
+        <Route path="/users/:username" element = {<PublicProfilePage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default AppRouter;

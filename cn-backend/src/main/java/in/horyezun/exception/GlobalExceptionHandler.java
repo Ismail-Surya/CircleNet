@@ -9,33 +9,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UsernameAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse>
-			handleUsernameAlreadyExists(UsernameAlreadyExistsException exc) {
+	public ResponseEntity<ErrorResponse> handleUsernameAlreadyExists(UsernameAlreadyExistsException exc) {
 		ErrorResponse response = new ErrorResponse(exc.getMessage());
-		
+
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	}
-	
+
 	@ExceptionHandler(EmailAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse>
-			handleEmailAlreadyExists(EmailAlreadyExistsException exc) {
+	public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(EmailAlreadyExistsException exc) {
 		ErrorResponse response = new ErrorResponse(exc.getMessage());
-		
+
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	}
-	
+
 	@ExceptionHandler(InvalidCredentialsException.class)
-	public ResponseEntity <ErrorResponse> handleInvalidCredentialsException (InvalidCredentialsException exc) {
+	public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException exc) {
 		ErrorResponse response = new ErrorResponse(exc.getMessage());
-		
+
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 	}
-	
+
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUsernameNotFound(UsernameNotFoundException exc) {
+		ErrorResponse response = new ErrorResponse(exc.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity <ErrorResponse> handleGenericException (Exception exc) {
+	public ResponseEntity<ErrorResponse> handleGenericException(Exception exc) {
 		ErrorResponse response = new ErrorResponse("An unexpected error occurred");
-		
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 
 }
