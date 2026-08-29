@@ -1,79 +1,72 @@
-package in.horyezun.post.entity;
+package in.horyezun.comment.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import in.horyezun.comment.entity.Comment;
+import in.horyezun.post.entity.Post;
 import in.horyezun.user.entity.User;
 
-@Entity
-@Table(name = "posts")
-public class Post {
+@Table
+@Entity(name = "comments")
+public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, length = 1000)
 	private String content;
-
-	@Column(nullable = false)
+	
 	private LocalDateTime createdAt;
-
-	@Column(nullable = false)
+	
 	private LocalDateTime updatedAt;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
-	@OneToMany(
-			mappedBy = "post",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private List <Comment> comments = new ArrayList<>();
-
-	public Post() {
+	@ManyToOne
+	@JoinColumn(name = "post_id", nullable = false)
+	private Post post;
+	
+	@PrePersist
+	public void prePersist () {
+		LocalDateTime now = LocalDateTime.now();
+		createdAt = now;
+		updatedAt = now;
+	}
+	
+	@PreUpdate
+	public void preUpdate () {
+		updatedAt = LocalDateTime.now();
 	}
 
-	public Post(String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public Comment() {
+	}
+
+	public Comment(String content, LocalDateTime createdAt, LocalDateTime updatedAt, User user, Post post) {
 		this.content = content;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.user = user;
+		this.post = post;
 	}
 
-	public Post(Long id, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public Comment(Long id, String content, LocalDateTime createdAt, LocalDateTime updatedAt, User user, Post post) {
 		this.id = id;
 		this.content = content;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-	}
-	
-	@PrePersist
-	public void prePersist() {
-		LocalDateTime now = LocalDateTime.now();
-		
-		this.createdAt = now;
-		this.updatedAt = now;
-	}
-	
-	@PreUpdate
-	public void preUpdate() {
-		this.updatedAt = LocalDateTime.now();
+		this.user = user;
+		this.post = post;
 	}
 
 	public Long getId() {
@@ -116,17 +109,12 @@ public class Post {
 		this.user = user;
 	}
 
-	public List<Comment> getComments() {
-		return comments;
+	public Post getPost() {
+		return post;
 	}
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	@Override
-	public String toString() {
-		return "Post [id=" + id + ", content=" + content + ", user=" + user.getUsername() + "]";
+	public void setPost(Post post) {
+		this.post = post;
 	}
 	
 }

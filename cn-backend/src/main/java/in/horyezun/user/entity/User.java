@@ -15,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import in.horyezun.comment.entity.Comment;
 import in.horyezun.post.entity.Post;
 
 @Entity
@@ -56,6 +57,13 @@ public class User {
 				orphanRemoval = true
 			)
 	private List <Post> posts = new ArrayList<> ();
+	
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	private List <Comment> comments = new ArrayList<>();
 
 	@PrePersist
 	public void prePersist () {
@@ -186,6 +194,14 @@ public class User {
 
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	@Override
