@@ -3,170 +3,215 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:8787";
 
 export type RegisterRequest = {
-    username: string,
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-}
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
 
 export type RegisterResponse = {
-    message: string
-}
+  message: string;
+};
 
 export interface LoginRequest {
-    username: string,
-    password: string
+  username: string;
+  password: string;
 }
 
 export interface LoginResponse {
-    token: string
+  token: string;
 }
 
 export interface UserProfileResponse {
-    id: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    profilePictureUrl: string | null;
-    bio: string | null;
-    createdAt: string;
-    updatedAt: string
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string | null;
+  bio: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UpdateProfileRequest {
-    firstName: string,
-    lastName: string,
-    bio: string,
-    profilePictureUrl: string
+  firstName: string;
+  lastName: string;
+  bio: string;
+  profilePictureUrl: string;
 }
 
 export type CreatePostRequest = {
-    content: string
-}
+  content: string;
+};
 
 export type PostResponse = {
-    id: number;
-    content: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    profilePictureUrl: string;
-    createdAt: string;
-}
+  id: number;
+  content: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string;
+  createdAt: string;
+};
 
 export interface PublicProfileResponse {
-    username: string;
-    firstName: string;
-    lastName: string;
-    profilePictureUrl: string | null;
-    bio: string | null;
-    createdAt: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string | null;
+  bio: string | null;
+  createdAt: string;
 }
 
-export const registerUser = async (request : RegisterRequest) :
-    Promise <RegisterResponse> => {
-
-    const response = await axios.post <RegisterResponse> (
-        `${API_BASE_URL}/api/auth/register`,
-        request
-    );
-
-    return response.data;
-
+export interface CreateCommentRequest {
+  content: string;
 }
 
-export const loginUser = async (request: LoginRequest) :
-    Promise <LoginResponse> => {
-
-        const response = await axios.post<LoginResponse> (
-            `${API_BASE_URL}/api/auth/login`,
-            request
-        );
-
-        return response.data;
-
-    }
-
-export async function getProfile() : Promise <UserProfileResponse> {
-    const token = localStorage.getItem("token");
-
-    const response = await axios.get<UserProfileResponse>(
-        `${API_BASE_URL}/api/user/profile`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    );
-
-    return response.data;
+export interface CommentResponse {
+  id: number;
+  content: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string | null;
+  createdAt: string;
 }
 
-export async function updateProfile(request: UpdateProfileRequest) : Promise<UserProfileResponse> {
-    const token = localStorage.getItem("token");
+export const registerUser = async (
+  request: RegisterRequest,
+): Promise<RegisterResponse> => {
+  const response = await axios.post<RegisterResponse>(
+    `${API_BASE_URL}/api/auth/register`,
+    request,
+  );
 
-    const response = await axios.put<UserProfileResponse>(
-        `${API_BASE_URL}/api/user/profile`,
-        request,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    );
+  return response.data;
+};
 
-    return response.data;
+export const loginUser = async (
+  request: LoginRequest,
+): Promise<LoginResponse> => {
+  const response = await axios.post<LoginResponse>(
+    `${API_BASE_URL}/api/auth/login`,
+    request,
+  );
+
+  return response.data;
+};
+
+export async function getProfile(): Promise<UserProfileResponse> {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get<UserProfileResponse>(
+    `${API_BASE_URL}/api/user/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
 }
 
-export async function createPost (
-    request: CreatePostRequest
-) : Promise <PostResponse> {
-    const token = localStorage.getItem("token");
+export async function updateProfile(
+  request: UpdateProfileRequest,
+): Promise<UserProfileResponse> {
+  const token = localStorage.getItem("token");
 
-    const response = await axios.post <PostResponse> (
-        `${API_BASE_URL}/api/posts`,
-        request,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        }
-    );
+  const response = await axios.put<UserProfileResponse>(
+    `${API_BASE_URL}/api/user/profile`,
+    request,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    return response.data;
+  return response.data;
 }
 
-export async function getFeed () : Promise <PostResponse[]> {
-    const token = localStorage.getItem(`token`);
+export async function createPost(
+  request: CreatePostRequest,
+): Promise<PostResponse> {
+  const token = localStorage.getItem("token");
 
-    const response = await axios.get<PostResponse[]> (
-        `${API_BASE_URL}/api/posts`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    );
+  const response = await axios.post<PostResponse>(
+    `${API_BASE_URL}/api/posts`,
+    request,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    return response.data;
+  return response.data;
 }
 
-export async function getPublicProfile (
-    username: string
-) : Promise <PublicProfileResponse> {
+export async function getFeed(): Promise<PostResponse[]> {
+  const token = localStorage.getItem(`token`);
 
-    const token = localStorage.getItem('token');
+  const response = await axios.get<PostResponse[]>(
+    `${API_BASE_URL}/api/posts`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    const response = await axios.get<PublicProfileResponse>(
-        `${API_BASE_URL}/api/user/${username}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    );
-    return response.data;
+  return response.data;
+}
 
+export async function getPublicProfile(
+  username: string,
+): Promise<PublicProfileResponse> {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get<PublicProfileResponse>(
+    `${API_BASE_URL}/api/user/${username}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data;
+}
+
+export async function getComments(postId: number): Promise<CommentResponse[]> {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get<CommentResponse[]>(
+    `${API_BASE_URL}/api/posts/${postId}/comments`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data;
+}
+
+export async function createComment(
+  postId: number,
+  request: CreateCommentRequest,
+): Promise<CommentResponse> {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.post<CommentResponse>(
+    `${API_BASE_URL}/api/posts/${postId}/comments`,
+    request,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
 }

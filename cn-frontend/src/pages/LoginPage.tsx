@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  getProfile,
   loginUser,
   type LoginRequest,
 } from "../services/authService";
